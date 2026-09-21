@@ -41,7 +41,7 @@
 
     <!-- 日期选择 -->
     <div class="card">
-      <van-field v-model="form.date" label="日期" readonly clickable right-icon="arrow" />
+      <van-field v-model="form.date" label="日期" readonly clickable name="date" right-icon="arrow" @click="showDatePicker = true" />
     </div>
     <van-popup v-model:show="showDatePicker" position="bottom" round>
       <van-date-picker
