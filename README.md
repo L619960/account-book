@@ -1,31 +1,54 @@
-# H5 记账本
+# 小浪出品 · 个人记账本
 
-一个基于 Vue 3 的移动端记账应用，支持收支记录、预算管理、数据统计等功能。
+一个基于 Vue 3 的轻量级记账应用，支持桌面端和移动端，数据本地存储，隐私安全。
 
-## 技术栈
+## 在线体验
 
-- **框架**: Vue 3 + Vite
-- **UI 组件库**: Vant 4
-- **状态管理**: Pinia
-- **本地存储**: IndexedDB (通过 idb 库)
-- **图表**: ECharts + vue-echarts
-- **路由**: Vue Router 4
-- **日期处理**: Day.js
-- **数据导出**: SheetJS (xlsx)
+**手机/电脑浏览器直接访问：** https://l619960.github.io/xiaolang/
+
+> 添加到主屏幕即可像原生 App 一样使用。
 
 ## 功能特性
 
-### 基础功能
-- ✅ 收支记录（添加、删除）
-- ✅ 分类管理（自定义分类、emoji 图标）
-- ✅ 账单列表（筛选、搜索）
-- ✅ 月份切换
+### 记账
+- ✅ 收支记录（添加、编辑、删除）
+- ✅ 分类管理（自定义分类、Emoji 图标）
+- ✅ 账单列表（按月份、收支类型筛选）
+- ✅ 日期选择
+- ✅ 备注
 
-### 高级功能
+### 统计
+- ✅ 月度收支概览
+- ✅ 支出/收入分类饼图
+- ✅ 储蓄率计算
+- ✅ 分类明细列表
+
+### 预算
+- ✅ 月度总预算
+- ✅ 预算进度条
+- ✅ 超支提醒
+
+### 多账本
 - ✅ 多账本管理（创建、切换、删除）
-- ✅ 预算管理（分类预算、预算提醒）
-- ✅ 数据统计（饼图展示、收支分析）
-- ✅ 数据导出（CSV 格式）
+- ✅ 每个账本独立分类和数据
+
+### 数据
+- ✅ 数据导出（CSV）
+- ✅ 数据导入（CSV）
+- ✅ 本地存储（IndexedDB）
+- ✅ 云同步（GitHub Gist）
+
+## 技术栈
+
+- **框架**: Vue 3 + Vite 6
+- **UI 组件库**: Vant 4
+- **状态管理**: Pinia
+- **本地存储**: IndexedDB (idb)
+- **图表**: ECharts
+- **路由**: Vue Router 4 (Hash 模式)
+- **日期处理**: Day.js
+- **桌面端**: Electron 30
+- **部署**: GitHub Pages + GitHub Actions
 
 ## 快速开始
 
@@ -38,102 +61,42 @@ npm run dev
 
 # 构建生产版本
 npm run build
+
+# 构建桌面安装包
+npm run electron:build
 ```
 
 ## 项目结构
 
 ```
-src/
-├── assets/          # 静态资源
-├── components/      # 公共组件
-├── db/              # IndexedDB 数据库操作
-├── router/          # 路由配置
-├── stores/          # Pinia 状态管理
-├── utils/           # 工具函数
-├── views/           # 页面组件
-│   ├── Home/        # 首页（账单列表）
-│   ├── Record/      # 记账页面
-│   ├── Stats/       # 统计页面
-│   ├── Budget/      # 预算页面
-│   ├── Account/     # 账本管理
-│   └── Category/    # 分类管理
-├── App.vue          # 根组件
-└── main.js          # 入口文件
+├── src/
+│   ├── assets/          # 静态资源和全局样式
+│   ├── db/              # IndexedDB 数据库操作
+│   ├── router/          # 路由配置
+│   ├── stores/         # Pinia 状态管理
+│   ├── utils/           # 工具函数（含云同步）
+│   ├── views/           # 页面组件
+│   │   ├── Home/       # 首页（账单列表）
+│   │   ├── Record/     # 记账/编辑
+│   │   ├── Stats/      # 统计图表
+│   │   ├── Budget/     # 预算管理
+│   │   ├── Account/    # 我的/账本管理
+│   │   ├── Category/   # 分类管理
+│   │   └── Import/     # 数据导入
+│   ├── App.vue
+│   └── main.js
+├── electron/            # Electron 主进程和预加载
+├── build/               # 应用图标
+├── public/              # PWA 配置和静态文件
+└── .github/workflows/   # GitHub Actions 部署
 ```
 
-## 页面说明
+## 云同步配置
 
-### 首页（记账）
-- 账本选择器
-- 月份切换
-- 收支概览（收入、支出、结余）
-- 账单列表（筛选、搜索）
-- 悬浮按钮快速记账
-
-### 记账页面
-- 收支类型切换
-- 金额输入（支持键盘输入）
-- 分类选择（网格布局）
-- 日期选择
-- 备注输入
-
-### 统计页面
-- 收支对比
-- 储蓄率计算
-- 支出分类饼图
-- 收入分类饼图
-- 分类明细列表
-
-### 预算页面
-- 预算设置
-- 预算进度条
-- 已用金额/剩余金额
-- 超支提醒
-
-### 我的（账本管理）
-- 多账本创建/切换/删除
-- 数据导出
-- 分类管理入口
-- 数据清空
-
-### 分类管理
-- 支出分类管理
-- 收入分类管理
-- 添加自定义分类
-- 删除分类
-
-## 默认分类
-
-### 支出分类
-餐饮、交通、购物、娱乐、住房、医疗、教育、通讯、服饰、其他
-
-### 收入分类
-工资、奖金、兼职、投资、红包、退款、其他
-
-## 数据库设计
-
-### Records（账单）
-- id, accountId, type, amount, category, date, note, createdAt, updatedAt
-
-### Accounts（账本）
-- id, name, color, createdAt
-
-### Categories（分类）
-- id, name, icon, type, accountId, isDefault, sort, createdAt
-
-### Budgets（预算）
-- id, accountId, categoryId, month, amount, createdAt, updatedAt
-
-## 开发计划
-
-- [ ] 编辑账单记录
-- [ ] 图表切换年/月视图
-- [ ] 预算提醒功能
-- [ ] 数据备份/恢复
-- [ ] 主题切换
-- [ ] 更多统计图表
-- [ ] 导入数据功能
+1. 打开 https://github.com/settings/tokens/new?scopes=gist 创建 Token（只需 gist 权限）
+2. 在应用「我的 → 云同步」中粘贴 Token
+3. 两端自动同步数据
 
 ## License
 
-MIT
+[MIT](./LICENSE)
