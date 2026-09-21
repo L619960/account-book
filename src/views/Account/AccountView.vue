@@ -30,6 +30,40 @@
       <van-button type="primary" block round class="add-account-btn" icon="plus" @click="showAddAccountDialog = true">新建账本</van-button>
     </div>
 
+    <!-- 云同步 -->
+    <div class="card section">
+      <div class="section-title">云同步</div>
+      <div v-if="!syncConfigured" class="sync-setup">
+        <div class="sync-desc">
+          使用 GitHub Gist 实现多端同步。需要一个 GitHub Personal Access Token（只读 gist 权限即可）。
+        </div>
+        <van-field
+          v-model="githubToken"
+          label="GitHub Token"
+          type="password"
+          placeholder="ghp_xxxxxxxxxxxx"
+          clearable
+        />
+        <div class="sync-help">
+          没有 Token？<a href="https://github.com/settings/tokens/new?scopes=gist&description=H5%E8%AE%B0%E8%B4%A6%E6%9C%AC" target="_blank" rel="noopener">点这里创建</a>（只需勾选 gist 权限）
+        </div>
+        <van-button type="primary" block round class="sync-btn" @click="setupSync" :loading="syncLoading">
+          开启云同步
+        </van-button>
+      </div>
+      <div v-else class="sync-status">
+        <div class="sync-info">
+          <span class="sync-dot online"></span>
+          <span>云同步已开启</span>
+        </div>
+        <div v-if="lastSyncTime" class="sync-time">上次同步：{{ lastSyncTime }}</div>
+        <div class="sync-actions">
+          <van-button size="small" type="primary" plain @click="doSync" :loading="syncLoading">立即同步</van-button>
+          <van-button size="small" type="danger" plain @click="disableSync">关闭同步</van-button>
+        </div>
+      </div>
+    </div>
+
     <!-- 数据管理 -->
     <div class="card section">
       <div class="section-title">数据管理</div>
@@ -88,6 +122,7 @@ import { useRecordStore } from '@/stores/index.js'
 import { showDialog, showToast } from 'vant'
 import { openDB } from 'idb'
 import dayjs from 'dayjs'
+import { getSyncConfig, setSyncConfig, clearSyncConfig, getLastSyncTime, syncNow } from '@/utils/sync.js'
 
 const router = useRouter()
 const accountStore = useAccountStore()
@@ -98,6 +133,12 @@ const showAddAccountDialog = ref(false)
 const showDeleteDialog = ref(false)
 const newAccountName = ref('')
 const deletingAccount = ref(null)
+
+// 云同步
+const githubToken = ref('')
+const syncLoading = ref(false)
+const syncConfigured = ref(false)
+const lastSyncTime = ref('')
 
 const currentAccountName = computed(() => {
   const cur = accounts.value.find(a => a.id === accountStore.currentAccountId)
@@ -187,8 +228,62 @@ function goToCategory() {
   router.push('/category')
 }
 
+async function setupSync() {
+  if (!githubToken.value.trim()) {
+    showToast({ message: '请输入 GitHub Token', type: 'warning' })
+    return
+  }
+  syncLoading.value = true
+  try {
+    setSyncConfig(githubToken.value.trim(), '')
+    await syncNow()
+    syncConfigured.value = true
+    githubToken.value = ''
+    updateSyncTime()
+    showToast({ message: '云同步已开启', type: 'success' })
+  } catch (e) {
+    clearSyncConfig()
+    showToast({ message: e.message || 'Token 无效，请检查', type: 'danger' })
+  } finally {
+    syncLoading.value = false
+  }
+}
+
+async function doSync() {
+  syncLoading.value = true
+  try {
+    const result = await syncNow()
+    updateSyncTime()
+    showToast({ message: result.message, type: 'success' })
+    // 刷新页面数据
+    await accountStore.loadAccounts()
+    accounts.value = await accountStore.getAccountsList()
+  } catch (e) {
+    showToast({ message: e.message || '同步失败', type: 'danger' })
+  } finally {
+    syncLoading.value = false
+  }
+}
+
+function disableSync() {
+  showDialog({ title: '关闭云同步', message: '关闭后将不再自动同步，本地数据保留。确定关闭吗？' }).then(() => {
+    clearSyncConfig()
+    syncConfigured.value = false
+    lastSyncTime.value = ''
+    showToast({ message: '已关闭云同步', type: 'success' })
+  })
+}
+
+function updateSyncTime() {
+  const t = getLastSyncTime()
+  if (t) lastSyncTime.value = dayjs(t).format('MM-DD HH:mm')
+}
+
 onMounted(async () => {
   accounts.value = await accountStore.getAccountsList() || []
+  const cfg = getSyncConfig()
+  syncConfigured.value = !!(cfg.token && cfg.gistId)
+  updateSyncTime()
 })
 </script>
 
@@ -303,6 +398,54 @@ onMounted(async () => {
 }
 .menu-item.danger .menu-left {
   color: var(--expense);
+}
+
+/* 云同步 */
+.sync-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.sync-help {
+  font-size: 12px;
+  color: var(--text-3);
+  margin: 8px 0 12px;
+}
+.sync-help a {
+  color: var(--brand-600);
+  text-decoration: none;
+}
+.sync-btn {
+  margin-top: 4px;
+}
+.sync-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 6px;
+}
+.sync-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.sync-dot.online {
+  background: #22c55e;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
+}
+.sync-time {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-bottom: 12px;
+}
+.sync-actions {
+  display: flex;
+  gap: 10px;
 }
 
 /* 关于 */

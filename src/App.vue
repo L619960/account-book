@@ -26,6 +26,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { initDB } from '@/db/index.js'
 import { useAccountStore } from '@/stores/index.js'
 import { showToast } from 'vant'
+import { getSyncConfig, pullSync } from '@/utils/sync.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -43,6 +44,15 @@ const tabMap = [
 onMounted(async () => {
   try {
     await initDB()
+    // 如果已配置云同步，启动时自动拉取最新数据
+    const cfg = getSyncConfig()
+    if (cfg.token && cfg.gistId) {
+      try {
+        await pullSync()
+      } catch (e) {
+        console.warn('自动同步失败:', e.message)
+      }
+    }
     await accountStore.loadAccounts()
     updateActiveTab()
   } catch (error) {
