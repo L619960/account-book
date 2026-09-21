@@ -14,8 +14,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt'],
       manifest: {
-        name: 'H5记账本',
-        short_name: '记账本',
+        name: '小浪出品（个人记账本）',
+        short_name: '小浪记账',
         description: '一个基于 Vue 3 的移动端记账应用',
         theme_color: '#4f6ef7',
         background_color: '#f4f6fb',

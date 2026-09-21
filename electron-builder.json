@@ -1,6 +1,6 @@
 {
   "appId": "com.h5accountbook.app",
-  "productName": "记账本",
+  "productName": "小浪出品",
   "directories": {
     "output": "installer"
   },
@@ -25,9 +25,9 @@
     "oneClick": false,
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
-    "shortcutName": "记账本",
+    "shortcutName": "小浪出品",
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true
   },
-  "artifactName": "记账本_${version}_setup.exe"
+  "artifactName": "小浪出品_${version}_setup.exe"
 }

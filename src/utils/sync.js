@@ -70,7 +70,7 @@ async function exportLocalData() {
 // 创建新 gist
 async function createGist(data) {
   const res = await githubApi('https://api.github.com/gists', 'POST', {
-    description: 'H5记账本云同步数据',
+    description: '小浪出品云同步数据',
     public: false,
     files: {
       'account-book-data.json': {

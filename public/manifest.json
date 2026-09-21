@@ -1,11 +1,11 @@
 {
-  "name": "H5记账本",
-  "short_name": "记账本",
-  "description": "一个基于 Vue 3 的移动端记账应用",
-  "start_url": "/",
+  "name": "小浪出品（个人记账本）",
+  "short_name": "小浪记账",
+  "description": "小浪出品 - 个人记账应用",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#f7f8fa",
-  "theme_color": "#ff976a",
+  "background_color": "#f4f6fb",
+  "theme_color": "#4f6ef7",
   "orientation": "portrait",
   "icons": [
     {

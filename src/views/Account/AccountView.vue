@@ -90,7 +90,7 @@
     <!-- 关于 -->
     <div class="card section about-card">
       <div class="about-logo">账</div>
-      <div class="about-item">H5记账本 v1.0</div>
+      <div class="about-item">小浪出品 v1.0</div>
       <div class="about-desc">本地存储，隐私安全</div>
     </div>
   </div>
