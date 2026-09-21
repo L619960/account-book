@@ -1,0 +1,143 @@
+/* ============================================================
+   设计系统 —— 现代简约 · 清爽财务风
+   ============================================================ */
+:root {
+  /* 品牌色：靛蓝 → 紫渐变 */
+  --brand-50: #eef2ff;
+  --brand-100: #e0e7ff;
+  --brand-200: #c7d2fe;
+  --brand-500: #4f6ef7;
+  --brand-600: #3b5bf0;
+  --brand-gradient: linear-gradient(135deg, #6366f1 0%, #4f6ef7 55%, #8b5cf6 100%);
+
+  /* 功能色 */
+  --income: #10b981;
+  --income-soft: rgba(16, 185, 129, 0.12);
+  --expense: #f43f5e;
+  --expense-soft: rgba(244, 63, 94, 0.12);
+
+  /* 中性色 */
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --text-1: #1a1d26;
+  --text-2: #5a6072;
+  --text-3: #9aa0b4;
+  --border: #eef1f7;
+
+  /* 圆角与阴影 */
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --shadow-card: 0 2px 12px rgba(30, 41, 82, 0.05);
+  --shadow-float: 0 8px 24px rgba(79, 110, 247, 0.28);
+
+  /* Vant 主题覆盖 */
+  --van-primary-color: #4f6ef7;
+  --van-primary-text-color: #ffffff;
+  --van-text-color: #1a1d26;
+  --van-text-color-2: #9aa0b4;
+  --van-background: #f4f6fb;
+  --van-background-2: #ffffff;
+  --van-cell-background: #ffffff;
+  --van-tabs-bottom-bar-color: #4f6ef7;
+  --van-tab-active-text-color: #4f6ef7;
+  --van-button-primary-background: #4f6ef7;
+  --van-button-primary-border-color: #4f6ef7;
+  --van-button-danger-background: #f43f5e;
+  --van-button-danger-border-color: #f43f5e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* 桌面窗口外背景色 */
+  background: #e6eaf3;
+  color: var(--text-1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 应用容器：桌面端铺满窗口宽度 */
+.app-container {
+  min-height: 100vh;
+  background: var(--bg);
+  position: relative;
+}
+
+/* 页面容器 */
+.page-container {
+  padding: 16px;
+  padding-bottom: 96px;
+  min-height: 100vh;
+}
+
+/* 卡片 */
+.card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-card);
+}
+
+/* 金额色 */
+.amount-income {
+  color: var(--income);
+}
+.amount-expense {
+  color: var(--expense);
+}
+
+/* 数字等宽，金额对齐更好看 */
+.money {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* 图表容器 */
+.chart-container {
+  width: 100%;
+  height: 300px;
+  margin: 8px 0;
+}
+
+/* 右下角记一笔悬浮按钮 */
+.add-btn {
+  position: fixed;
+  bottom: 92px;
+  right: 24px;
+  z-index: 998;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  font-size: 26px;
+  background: var(--brand-gradient) !important;
+  border: none !important;
+  box-shadow: var(--shadow-float);
+  transition: transform 0.15s ease;
+}
+.add-btn:active {
+  transform: scale(0.92);
+}
+
+/* 间距工具类 */
+.mt-2 {
+  margin-top: 8px;
+}
+.mt-3 {
+  margin-top: 12px;
+}
+.mb-3 {
+  margin-bottom: 12px;
+}

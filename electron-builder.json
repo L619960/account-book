@@ -1,0 +1,33 @@
+{
+  "appId": "com.h5accountbook.app",
+  "productName": "记账本",
+  "directories": {
+    "output": "installer"
+  },
+  "files": [
+    "dist/**/*",
+    "dist-electron/**/*",
+    "package.json"
+  ],
+  "extraMetadata": {
+    "main": "dist-electron/main/index.js"
+  },
+  "win": {
+    "icon": "build/icon.ico",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "shortcutName": "记账本",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true
+  },
+  "artifactName": "记账本_${version}_setup.exe"
+}
